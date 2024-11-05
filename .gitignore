@@ -1,0 +1,6 @@
+# Ignorar todo o conteúdo
+**/data/*
+/Media_Drive/*
+# Exceto o arquivo .gitkeep
+!**/.gitkeep
+

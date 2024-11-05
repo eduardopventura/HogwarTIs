@@ -1,0 +1,18 @@
+services:
+  cloudfalred:
+    container_name: cloudflare-tunel
+    hostname: cloudfalre-tunel
+    image: figro/unraid-cloudflared-tunnel 
+    restart: unless-stopped
+    #command: tunnel run
+    env_file:
+      - app.env
+    volumes:
+      - ./data:/mnt/user/appdata/cloudflared
+    ports:
+      - 46495:46495
+    networks:
+      - docker-net
+networks:
+  docker-net:
+    external: true

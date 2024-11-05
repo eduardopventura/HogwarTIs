@@ -1,0 +1,20 @@
+services:
+  App:
+    container_name:
+    hostname: 
+    image: 
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - app.env
+    volumes:
+      - ./data:
+    networks:
+      - docker-net
+    ports:
+      -
+
+networks:
+  docker-net:
+    external: true 

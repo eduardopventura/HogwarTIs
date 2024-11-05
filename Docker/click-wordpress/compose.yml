@@ -1,0 +1,38 @@
+services:
+  click-wordpress:
+    container_name: click-wordpress
+    hostname: click-wordpress
+    image: wordpress
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - app.env
+    volumes:
+      - ./data/click-wordpress:/var/www/html:rw
+    networks:
+      - docker-net
+    ports:
+      - 8083:80
+    depends_on:
+      - click-mariadb
+
+  vent-mariadb:
+    container_name: click-mariadb
+    hostname: click-mariadb
+    image: lscr.io/linuxserver/mariadb
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - app-db.env
+    volumes:
+      - ./data/click-mariadb:/config
+    networks:
+      - docker-net
+    ports:
+      - 3306:3306
+
+networks:
+  docker-net:
+    external: true 

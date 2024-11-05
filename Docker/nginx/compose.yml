@@ -1,0 +1,38 @@
+services:
+  nginx-proxy-manager:
+    container_name: nginx-proxy-manager
+    hostname: nginx-proxy-manager
+    image: jc21/nginx-proxy-manager:latest 
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - app.env
+    volumes:
+      - ./data/nginx:/data
+      - ./data/letsencrypt:/etc/letsencrypt
+    networks:
+      - docker-net
+    ports:
+      - 80:80
+      - 443:443
+      - 27015:27015/udp
+      - 81:81
+      - 9010-9020:9010-9020/udp
+    depends_on:
+      - nginx-db
+  nginx-db:
+    container_name: nginx-db
+    hostname: nginx-db    
+    image: jc21/mariadb-aria:latest
+    restart: unless-stopped
+    env_file:
+      - app-db.env
+    volumes:
+      - ./data/db:/var/lib/mysql
+    networks:
+      - docker-net
+
+networks:
+  docker-net:
+    external: true 

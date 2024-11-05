@@ -1,0 +1,23 @@
+services:
+  App:
+    container_name: emby
+    hostname: emby
+    image: lscr.io/linuxserver/emby:latest 
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - app.env
+    volumes:
+      - ./data:/config
+      - /media/Filmes:/media/Filmes
+      - /media/Series:/media/Series
+      - /media/Animes:/media/Animes
+    networks:
+      - docker-net
+    ports:
+      - 8096:8096
+
+networks:
+  docker-net:
+    external: true 
