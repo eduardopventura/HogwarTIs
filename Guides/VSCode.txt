@@ -1,0 +1,26 @@
+**Configuração do VScode**
+*Abrir o arquivo do projeto
+
+*Instalar as extenções:
+-Markdown All in One
+-Git & GitHub Extension Pack
+-Remote-SSH
+-VSCode-Icons
+-YAML
+-WSL
+-Docker
+-Color Picker
+-Color Highlight
+-Readme Editor
+
+*Adicionar conexão SSH:
+ssh -i ~/diretorio/chave/privada user@ip
+
+(Exemplo de arquivo config para ssh)
+Host 168.138.144.19
+  HostName 168.138.144.19
+  IdentityFile ~/Git/HogwarTIs/SSH/ssh-key-2024-10-27.key
+  User ubuntu
+
+
+#git token eduardopventura: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

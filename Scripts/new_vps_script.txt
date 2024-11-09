@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Solicitar nome do usuário Git
+read -p "Digite o nome do usuário Git: " git_user
+
+# Solicitar nome do repositório Git
+read -p "Digite o nome do repositório Git: " git_repo
+
+# Solicitar o token do Git
+read -p "Digite o token do Git: " git_token
+
+# Obter o usuário local que está executando o script
+user=$(whoami)
+
+# Atualizar repositórios
+echo "Atualizando repositórios do sistema..."
+sudo apt-get update -y
+sudo apt-get upgrade -y
+echo "Atualização concluída."
+
+# Instalar Docker, Compose e Git
+echo "Vamos instalar Docker, Compose e Git..."
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin git
+echo "Instalação do Docker, Compose e Git concluída."
+
+# Instalar rclone
+echo "Vamos instalar rclone agora..."
+sudo -v
+curl https://rclone.org/install.sh | sudo bash
+echo "Instalação do rclone concluída."
+
+# Configurar Git
+echo "Vamos configurar o Git..."
+mkdir -p /home/$user/git
+cd /home/$user/git
+sudo git config --global user.email "email"
+sudo git config --global user.name "name"
+echo "Configuração do Git concluída."
+
+# Adicionar repositório remoto e puxar código
+echo "Adicionando repositório remoto e puxando código..."
+git remote add origin https://github.com/$git_user/$git_repo.git
+git pull https://$git_token@github.com/$git_user/$git_repo.git
+echo "Código puxado do repositório remoto."
+
+echo "Script executado com sucesso!"
+
+
+
