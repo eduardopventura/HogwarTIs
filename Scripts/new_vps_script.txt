@@ -17,6 +17,7 @@ echo "Atualizando repositórios do sistema..."
 sudo apt-get update -y
 sudo apt-get upgrade -y
 echo "Atualização concluída."
+sleep 5
 
 # Instalar Docker, Compose e Git
 echo "Vamos instalar Docker, Compose e Git..."
@@ -26,12 +27,14 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin git
 echo "Instalação do Docker, Compose e Git concluída."
+sleep 5
 
 # Instalar rclone
 echo "Vamos instalar rclone agora..."
 sudo -v
 curl https://rclone.org/install.sh | sudo bash
 echo "Instalação do rclone concluída."
+sleep 5
 
 # Configurar Git
 echo "Vamos configurar o Git..."
@@ -40,12 +43,25 @@ cd /home/$user/git
 sudo git config --global user.email "email"
 sudo git config --global user.name "name"
 echo "Configuração do Git concluída."
+sleep 5
 
 # Adicionar repositório remoto e puxar código
 echo "Adicionando repositório remoto e puxando código..."
 git remote add origin https://github.com/$git_user/$git_repo.git
 git pull https://$git_token@github.com/$git_user/$git_repo.git
 echo "Código puxado do repositório remoto."
+sleep 5
+
+# Criar rede docker
+# Solicitar nome da rede Docker
+read -p "Digite o nome da rede Docker: " docker_net
+sudo docker create docker_net
+
+# Instalar o Tailscale
+echo "Vamos instalar Tailscale agora..."
+sudo apt-get install -y tailscale tailscale-archive-keyring
+echo "Instalação do Taisclae concluída."
+sleep 5
 
 echo "Script executado com sucesso!"
 
