@@ -3,6 +3,9 @@
 # Solicitar nome do usuário Git
 read -p "Digite o nome do usuário Git: " git_user
 
+# Solicitar nome do usuário Git
+read -p "Digite o email do usuário Git: " git_email
+
 # Solicitar nome do repositório Git
 read -p "Digite o nome do repositório Git: " git_repo
 
@@ -31,7 +34,6 @@ sleep 5
 
 # Instalar rclone
 echo "Vamos instalar rclone agora..."
-sudo -v
 curl https://rclone.org/install.sh | sudo bash
 echo "Instalação do rclone concluída."
 sleep 5
@@ -40,30 +42,39 @@ sleep 5
 echo "Vamos configurar o Git..."
 mkdir -p /home/$user/git
 cd /home/$user/git
-sudo git config --global user.email "email"
-sudo git config --global user.name "name"
+git config --global user.email $git_email
+git config --global user.name $git_user
 echo "Configuração do Git concluída."
 sleep 5
 
-# Adicionar repositório remoto e puxar código
-echo "Adicionando repositório remoto e puxando código..."
-git remote add origin https://github.com/$git_user/$git_repo.git
-git pull https://$git_token@github.com/$git_user/$git_repo.git
-echo "Código puxado do repositório remoto."
+# Clonar repositório
+echo "Clonando repositório Git..."
+git clone https://$git_token@github.com/$git_user/$git_repo.git
+cd $git_repo
+echo "Código clonado do repositório remoto."
 sleep 5
 
-# Criar rede docker
+# Adicionar usuário ao grupo Docker
+echo "Adicionando usuário ao grupo Docker..."
+sudo usermod -aG docker $user
+newgrp docker
+echo "Usuário adicionado ao grupo Docker."
+sleep 5
+
+# Criar rede Docker
 # Solicitar nome da rede Docker
 read -p "Digite o nome da rede Docker: " docker_net
-sudo docker create docker_net
+docker network create $docker_net
 
 # Instalar o Tailscale
 echo "Vamos instalar Tailscale agora..."
-sudo apt-get install -y tailscale tailscale-archive-keyring
-echo "Instalação do Taisclae concluída."
+sudo apt-get install -y tailscale
+sudo tailscale up
+echo "Instalação do Tailscale concluída."
 sleep 5
 
 echo "Script executado com sucesso!"
+
 
 
 
