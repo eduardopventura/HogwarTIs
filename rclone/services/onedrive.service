@@ -1,0 +1,27 @@
+[Unit]
+Description= RClone Mount Service - Onedrive
+After=network-online.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/rclone mount onedrive:Videos_Cursos /mnt/cloud/data/onedrive \
+--config=/home/ubuntu/.config/rclone/rclone.conf \
+--user-agent=ubuntu \
+--allow-other \
+--timeout=1h \
+--poll-interval=15s \
+--dir-cache-time=100h \
+--cache-dir=/mnt/rclone/cache/onedrive \
+--vfs-write-wait=1s \
+--vfs-cache-mode=full \
+--vfs-cache-max-size=7G \
+--vfs-cache-max-age=1000h
+
+ExecStop=/bin/fusermount -uz /mnt/cloud/data/onedrive
+Restart=on-abort
+RestartSec=5
+StartLimitInterval=60s
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target

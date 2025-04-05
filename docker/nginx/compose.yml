@@ -12,7 +12,7 @@ services:
       - ./data/nginx:/data
       - ./data/letsencrypt:/etc/letsencrypt
     networks:
-      - docker-net
+      - npm-net
     ports:
       - 80:80
       - 443:443
@@ -31,8 +31,8 @@ services:
     volumes:
       - ./data/db:/var/lib/mysql
     networks:
-      - docker-net
+      - npm-net
 
 networks:
-  docker-net:
+  npm-net:
     external: true 
