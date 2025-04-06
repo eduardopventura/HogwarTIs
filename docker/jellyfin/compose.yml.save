@@ -1,0 +1,22 @@
+services:
+  jellyfin:
+    container_name: jellyfin
+    hostname: jellyfin
+    image: jellyfin/jellyfin:latest
+    env_file
+      - app.env
+    volumes:
+      - ./data/config:/config  # Configurações do Jellyfin
+      - ./data/cache:/cache    # Cache do Jellyfin
+      - /mnt/cloud/data:/media  # Diretório com suas mídias (filmes, séries, música)
+    ports:
+      - 8096:8096  # Porta web do Jellyfin
+      - 8920:8920  # Porta HTTPS (opcional)
+      - 7359:7359/udp  # Para descoberta na rede local
+     networks:
+      - npm-net
+     restart: unless-stopped
+
+networks:
+  npm-net:
+    external: true 

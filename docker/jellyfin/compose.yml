@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  jellyfin:
+    container_name: jellyfin
+    hostname: jellyfin
+    image: jellyfin/jellyfin:latest
+    env_file:
+      - app.env
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - /mnt/cloud/data:/media
+    ports:
+      - 8096:8096
+      - 8920:8920
+      - 7359:7359/udp
+    networks:
+      - npm-net
+      - jellyfin-net
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri  # Para hardware acceleration (opcional)
+    environment:
+      - TZ=America/Sao_Paulo  # Ajuste seu fuso horário
+
+networks:
+  npm-net:
+    external: true
+  jellyfin-net:
+    driver: bridge

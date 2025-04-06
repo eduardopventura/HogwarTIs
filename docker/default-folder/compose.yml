@@ -11,10 +11,13 @@ services:
     volumes:
       - ./data:
     networks:
-      - docker-net
+      - ngx-net
+      - internal
     ports:
       -
 
 networks:
-  docker-net:
+  ngx-net:
     external: true 
+  internal:
+    driver: bridge
